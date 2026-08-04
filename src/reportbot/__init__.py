@@ -1,6 +1,5 @@
 """ReportBot package."""
 
+from .main import main
 
-def main() -> None:
-    """Entry point for the reportbot console script."""
-    print("ReportBot is ready.")
+__all__ = ["main"]
