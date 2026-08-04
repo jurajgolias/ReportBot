@@ -7,7 +7,9 @@ authors = [
     { name = "Juraj Goliaš", email = "jurajgolias0@gmail.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "requests>=2.34.2",
+]
 
 [project.scripts]
 reportbot = "reportbot:main"
