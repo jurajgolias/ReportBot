@@ -1,8 +1,8 @@
 import pytest
 import requests
 
-from fetch_data import fetch_weather_data
-from process_data import process_weather_data
+from reportbot.fetch_data import fetch_weather_data
+from reportbot.process_data import process_weather_data
 
 
 SAMPLE_DATA = {

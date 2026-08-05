@@ -5,7 +5,6 @@ API_URL = "https://api.open-meteo.com/v1/forecast"
 
 
 def fetch_weather_data() -> dict:
-    """Fetch today's weather forecast for Málaga."""
 
     parameters = {
         "latitude": 36.72,
