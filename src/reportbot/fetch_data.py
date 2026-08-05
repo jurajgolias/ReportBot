@@ -5,6 +5,7 @@ API_URL = "https://api.open-meteo.com/v1/forecast"
 
 
 def fetch_weather_data() -> dict:
+    """Fetch today's weather forecast for Málaga."""
 
     parameters = {
         "latitude": 36.72,
@@ -18,7 +19,20 @@ def fetch_weather_data() -> dict:
         "forecast_days": 1,
     }
 
-    response = requests.get(API_URL, params=parameters, timeout=10)
-    response.raise_for_status()
+    try:
+        response = requests.get(
+            API_URL,
+            params=parameters,
+            timeout=10,
+        )
+        response.raise_for_status()
+        data = response.json()
+    except requests.RequestException as error:
+        raise RuntimeError("Failed to fetch weather data.") from error
+    except ValueError as error:
+        raise ValueError("The API returned malformed JSON data.") from error
 
-    return response.json()
+    if not data:
+        raise ValueError("The API returned empty data.")
+
+    return data
