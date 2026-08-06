@@ -12,9 +12,11 @@ def main() -> None:
 
         print(report)
 
-        send_report(report)
-
-        print("Daily report sent successfully.")
+        try:
+            send_report(report)
+            print("Daily report sent successfully.")
+        except ValueError as error:
+            print(f"Email sending skipped: {error}")
     except (RuntimeError, ValueError) as error:
         print(f"Report bot failed: {error}")
         raise

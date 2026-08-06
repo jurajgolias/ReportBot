@@ -1,6 +1,7 @@
 import pytest
 import requests
 
+from reportbot import main as reportbot_main
 from reportbot.fetch_data import fetch_weather_data
 from reportbot.process_data import process_weather_data
 from reportbot.generate_report import generate_report
@@ -107,5 +108,30 @@ def test_generate_report() -> None:
     assert "2026-08-06" in report
     assert "31.5 °C" in report
     assert "10%" in report
+
+
+def test_main_skips_email_when_recipient_missing(monkeypatch, capsys) -> None:
+    monkeypatch.setattr(reportbot_main, "fetch_weather_data", lambda: SAMPLE_DATA)
+    monkeypatch.setattr(
+        reportbot_main,
+        "process_weather_data",
+        lambda raw_data: {
+            "date": "2026-08-06",
+            "maximum_temperature": 31.5,
+            "minimum_temperature": 22.0,
+            "rain_probability": 10,
+        },
+    )
+    monkeypatch.setattr(reportbot_main, "generate_report", lambda weather_data: "report")
+
+    def fake_send_report(report: str) -> None:
+        raise ValueError("EMAIL_RECIPIENT is not configured.")
+
+    monkeypatch.setattr(reportbot_main, "send_report", fake_send_report)
+
+    reportbot_main.main()
+
+    captured = capsys.readouterr()
+    assert "Email sending skipped: EMAIL_RECIPIENT is not configured." in captured.out
 
         

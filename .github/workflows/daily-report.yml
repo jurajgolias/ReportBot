@@ -2,8 +2,8 @@ name: Daily Weather Report
 
 on:
   schedule:
-    # Runs every day at 08:00 UTC
-    - cron: "0 8 * * *"
+    # Runs every day at 08:00 and 16:00 UTC
+    - cron: "0 9,14 * * *"
 
   # Allows you to test it manually
   workflow_dispatch:
