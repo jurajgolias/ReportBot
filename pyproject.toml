@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "Juraj Goliaš", email = "jurajgolias0@gmail.com" }
 ]
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "requests>=2.34.2",
     "ruff>=0.16.1",
