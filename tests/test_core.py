@@ -1,7 +1,9 @@
+import importlib
+
 import pytest
 import requests
 
-from reportbot import main as reportbot_main
+import reportbot.main as reportbot_main
 from reportbot.fetch_data import fetch_weather_data
 from reportbot.process_data import process_weather_data
 from reportbot.generate_report import generate_report
@@ -111,6 +113,8 @@ def test_generate_report() -> None:
 
 
 def test_main_skips_email_when_recipient_missing(monkeypatch, capsys) -> None:
+    importlib.reload(reportbot_main)
+
     monkeypatch.setattr(reportbot_main, "fetch_weather_data", lambda: SAMPLE_DATA)
     monkeypatch.setattr(
         reportbot_main,
