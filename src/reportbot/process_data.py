@@ -1,5 +1,4 @@
 def process_weather_data(raw_data: dict) -> dict:
-    """Extract values needed for the daily weather report."""
 
     if not raw_data:
         raise ValueError("Weather data cannot be empty.")

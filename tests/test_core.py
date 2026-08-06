@@ -3,6 +3,7 @@ import requests
 
 from reportbot.fetch_data import fetch_weather_data
 from reportbot.process_data import process_weather_data
+from reportbot.generate_report import generate_report
 
 
 SAMPLE_DATA = {
@@ -91,3 +92,20 @@ def test_fetch_weather_data_handles_network_failure(
         match="Failed to fetch weather data",
     ):
         fetch_weather_data()
+
+def test_generate_report() -> None:
+    weather_data = {
+        "date": "2026-08-06",
+        "maximum_temperature": 31.5,
+        "minimum_temperature": 22.0,
+        "rain_probability": 10,
+    }
+
+    report = generate_report(weather_data)
+
+    assert "Daily Weather Report" in report
+    assert "2026-08-06" in report
+    assert "31.5 °C" in report
+    assert "10%" in report
+
+        
