@@ -1,4 +1,5 @@
 import importlib
+import runpy
 
 import pytest
 import requests
@@ -110,6 +111,24 @@ def test_generate_report() -> None:
     assert "2026-08-06" in report
     assert "31.5 °C" in report
     assert "10%" in report
+
+
+def test_module_entrypoint_runs_main(monkeypatch) -> None:
+    monkeypatch.setattr(reportbot_main, "fetch_weather_data", lambda: SAMPLE_DATA)
+    monkeypatch.setattr(
+        reportbot_main,
+        "process_weather_data",
+        lambda raw_data: {
+            "date": "2026-08-06",
+            "maximum_temperature": 31.5,
+            "minimum_temperature": 22.0,
+            "rain_probability": 10,
+        },
+    )
+    monkeypatch.setattr(reportbot_main, "generate_report", lambda weather_data: "report")
+    monkeypatch.setattr(reportbot_main, "send_report", lambda report: None)
+
+    runpy.run_module("reportbot", run_name="__main__")
 
 
 def test_main_skips_email_when_recipient_missing(monkeypatch, capsys) -> None:
